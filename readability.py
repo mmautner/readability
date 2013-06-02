@@ -69,86 +69,85 @@ def countComplexWords(text=''):
         cur_word.remove(word)
     return complex_words
 
-def analyze_text(text):
-    words = getWords(text)
-    charCount = getCharacterCount(words)
-    wordCount = len(words)
-    sentenceCount = len(get_sentences(text))
-    syllableCount = count_syllables(words)
-    complexwordsCount = countComplexWords(text)
-    averageWordsPerSentence = wordCount/sentenceCount
-    
-    analyzedVars = {
-        'words': words,
-        'charCount': float(charCount),
-        'wordCount': float(wordCount),
-        'sentenceCount': float(sentenceCount),
-        'syllableCount': float(syllableCount),
-        'complexwordCount': float(complexwordsCount),
-        'averageWordsPerSentence': float(averageWordsPerSentence)
-    }
-    return analyzedVars
 
-def ARI(text):
-    analyzedVars = analyze_text(text)
-    score = 4.71 * (analyzedVars['charCount'] / analyzedVars['wordCount']) + 0.5 * (analyzedVars['wordCount'] / analyzedVars['sentenceCount']) - 21.43
-    return score
-    
-def FleschReadingEase(text):
-    score = 0.0
-    analyzedVars = analyze_text(text)
-    score = 206.835 - (1.015 * (analyzedVars['averageWordsPerSentence'])) - (84.6 * (analyzedVars['syllableCount']/ analyzedVars['wordCount']))
-    return round(score, 4)
-    
-def FleschKincaidGradeLevel(text):
-    analyzedVars = analyze_text(text)
-    score = 0.39 * (analyzedVars['averageWordsPerSentence']) + 11.8 * (analyzedVars['syllableCount']/ analyzedVars['wordCount']) - 15.59
-    return round(score, 4)
-    
-def GunningFogIndex(text):
-    analyzedVars = analyze_text(text)
-    score = 0.4 * ((analyzedVars['averageWordsPerSentence']) + (100 * (analyzedVars['complexwordCount']/analyzedVars['wordCount'])))
-    return round(score, 4)
+class Readability:
+    analyzedVars = {}
 
-def SMOGIndex(text):
-    analyzedVars = analyze_text(text)
-    score = (math.sqrt(analyzedVars['complexwordCount']*(30/analyzedVars['sentenceCount'])) + 3)
-    return score
+    def __init__(self, text):
+        self.analyze_text(text)
 
-def ColemanLiauIndex(text):
-    analyzedVars = analyze_text(text)
-    score = (5.89*(analyzedVars['charCount']/analyzedVars['wordCount']))-(30*(analyzedVars['sentenceCount']/analyzedVars['wordCount']))-15.8
-    return round(score, 4)
+    def analyze_text(self, text):
+        words = getWords(text)
+        charCount = getCharacterCount(words)
+        wordCount = len(words)
+        sentenceCount = len(get_sentences(text))
+        syllableCount = count_syllables(words)
+        complexwordsCount = countComplexWords(text)
+        averageWordsPerSentence = wordCount/sentenceCount
+        
+        self.analyzedVars = {
+            'words': words,
+            'charCount': float(charCount),
+            'wordCount': float(wordCount),
+            'sentenceCount': float(sentenceCount),
+            'syllableCount': float(syllableCount),
+            'complexwordCount': float(complexwordsCount),
+            'averageWordsPerSentence': float(averageWordsPerSentence)
+        }
 
-def LIX(text):
-    analyzedVars = analyze_text(text)
-    longwords = 0.0
-    for word in analyzedVars['words']:
-        if len(word) >= 7:
-            longwords += 1.0
-    score = analyzedVars['wordCount'] / analyzedVars['sentenceCount'] + float(100 * longwords) / analyzedVars['wordCount']
-    return score
+    def ARI(self):
+        score = 4.71 * (self.analyzedVars['charCount'] / self.analyzedVars['wordCount']) + 0.5 * (self.analyzedVars['wordCount'] / self.analyzedVars['sentenceCount']) - 21.43
+        return score
+        
+    def FleschReadingEase(self):
+        score = 0.0
+        score = 206.835 - (1.015 * (self.analyzedVars['averageWordsPerSentence'])) - (84.6 * (self.analyzedVars['syllableCount']/ self.analyzedVars['wordCount']))
+        return round(score, 4)
+        
+    def FleschKincaidGradeLevel(self):
+        score = 0.39 * (self.analyzedVars['averageWordsPerSentence']) + 11.8 * (self.analyzedVars['syllableCount']/ self.analyzedVars['wordCount']) - 15.59
+        return round(score, 4)
+        
+    def GunningFogIndex(self):
+        score = 0.4 * ((self.analyzedVars['averageWordsPerSentence']) + (100 * (self.analyzedVars['complexwordCount']/self.analyzedVars['wordCount'])))
+        return round(score, 4)
 
-def RIX(text):
-    analyzedVars = analyze_text(text)
-    score = 0.0
-    longwords = 0.0
-    for word in analyzedVars['words']:
-        if len(word) >= 7:
-            longwords += 1.0
-    score = longwords / analyzedVars['sentenceCount']
-    return score
+    def SMOGIndex(self):
+        score = (math.sqrt(self.analyzedVars['complexwordCount']*(30/self.analyzedVars['sentenceCount'])) + 3)
+        return score
+
+    def ColemanLiauIndex(self):
+        score = (5.89*(self.analyzedVars['charCount']/self.analyzedVars['wordCount']))-(30*(self.analyzedVars['sentenceCount']/self.analyzedVars['wordCount']))-15.8
+        return round(score, 4)
+
+    def LIX(self):
+        longwords = 0.0
+        for word in self.analyzedVars['words']:
+            if len(word) >= 7:
+                longwords += 1.0
+        score = self.analyzedVars['wordCount'] / self.analyzedVars['sentenceCount'] + float(100 * longwords) / self.analyzedVars['wordCount']
+        return score
+
+    def RIX(self):
+        score = 0.0
+        longwords = 0.0
+        for word in self.analyzedVars['words']:
+            if len(word) >= 7:
+                longwords += 1.0
+        score = longwords / self.analyzedVars['sentenceCount']
+        return score
         
 
 if __name__ == "__main__":
     text = """We are close to wrapping up our 10 week Rails Course. This week we will cover a handful of topics commonly encountered in Rails projects. We then wrap up with part 2 of our Reddit on Rails exercise!  By now you should be hard at work on your personal projects. The students in the course just presented in front of the class with some live demos and a brief intro to to the problems their app were solving. Maybe set aside some time this week to show someone your progress, block off 5 minutes and describe what goal you are working towards, the current state of the project (is it almost done, just getting started, needs UI, etc.), and then show them a quick demo of the app. Explain what type of feedback you are looking for (conceptual, design, usability, etc.) and see what they have to say.  As we are wrapping up the course you need to be focused on learning as much as you can, but also making sure you have the tools to succeed after the class is over."""
 
-    print 'ARI: ', ARI(text)
-    print 'FleschReadingEase: ', FleschReadingEase(text)
-    print 'FleschKincaidGradeLevel: ', FleschKincaidGradeLevel(text)
-    print 'GunningFogIndex: ', GunningFogIndex(text)
-    print 'SMOGIndex: ', SMOGIndex(text)
-    print 'ColemanLiauIndex: ', ColemanLiauIndex(text)
-    print 'LIX: ', LIX(text)
-    print 'RIX: ', RIX(text)
+    rd = Readability(text)
+    print 'ARI: ', rd.ARI()
+    print 'FleschReadingEase: ', rd.FleschReadingEase()
+    print 'FleschKincaidGradeLevel: ', rd.FleschKincaidGradeLevel()
+    print 'GunningFogIndex: ', rd.GunningFogIndex()
+    print 'SMOGIndex: ', rd.SMOGIndex()
+    print 'ColemanLiauIndex: ', rd.ColemanLiauIndex()
+    print 'LIX: ', rd.LIX()
+    print 'RIX: ', rd.RIX()
 
