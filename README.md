@@ -2,7 +2,19 @@ Readability
 ====================
 
 A collection of functions that measure the readability of a given body of text.
---------------------
+
+To get up and running you'll need [NLTK](http://nltk.org/) and will need the punkt
+data set:
+
+    shell$ pip install nltk
+    shell$ python
+    >>import nltk
+    >>nltk.download()
+    {{And then proceed to download the punkt dataset}}
+
+Demo:
+
+    shell$ python readability.py
 
 The following readability metrics are implemented in readability.py:
 
