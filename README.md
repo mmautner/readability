@@ -1,7 +1,10 @@
 Readability
 ====================
 
-A collection of functions that measure the readability of a given body of text.
+A collection of functions that measure the readability of a given body of text. I'd
+recommend checking out the wikipedia articles below--most of the metrics estimate 
+the grade level required to comprehend a given block of text and may return odd results
+on small snippets of text.
 
 To get up and running you'll need [NLTK](http://nltk.org/) and will need the punkt
 data set:
@@ -15,6 +18,14 @@ data set:
 Demo:
 
     shell$ python readability.py
+    ARI:  7.2164516129
+    FleschReadingEase:  88.9553
+    FleschKincaidGradeLevel:  5.3235
+    GunningFogIndex:  9.1355
+    SMOGIndex:  8.19615242271
+    ColemanLiauIndex:  6.7804
+    LIX:  35.2666666667
+    RIX:  3.1
 
 The following readability metrics are implemented in readability.py:
 
