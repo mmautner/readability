@@ -22,41 +22,41 @@ class Readability:
         sentence_count = len(get_sentences(text))
         syllable_count = count_syllables(words)
         complexwords_count = count_complex_words(text)
-        averageWordsPerSentence = word_count/sentence_count
+        avg_words_p_sentence = word_count/sentence_count
         
         self.analyzedVars = {
             'words': words,
-            'charCount': float(char_count),
-            'wordCount': float(word_count),
-            'sentenceCount': float(sentence_count),
-            'syllableCount': float(syllable_count),
-            'complexwordCount': float(complexwords_count),
-            'averageWordsPerSentence': float(averageWordsPerSentence)
+            'char_cnt': float(char_count),
+            'word_cnt': float(word_count),
+            'sentence_cnt': float(sentence_count),
+            'syllable_cnt': float(syllable_count),
+            'complex_word_cnt': float(complexwords_count),
+            'avg_words_p_sentence': float(avg_words_p_sentence)
         }
 
     def ARI(self):
-        score = 4.71 * (self.analyzedVars['charCount'] / self.analyzedVars['wordCount']) + 0.5 * (self.analyzedVars['wordCount'] / self.analyzedVars['sentenceCount']) - 21.43
+        score = 4.71 * (self.analyzedVars['char_cnt'] / self.analyzedVars['word_cnt']) + 0.5 * (self.analyzedVars['word_cnt'] / self.analyzedVars['sentence_cnt']) - 21.43
         return score
         
     def FleschReadingEase(self):
         score = 0.0
-        score = 206.835 - (1.015 * (self.analyzedVars['averageWordsPerSentence'])) - (84.6 * (self.analyzedVars['syllableCount']/ self.analyzedVars['wordCount']))
+        score = 206.835 - (1.015 * (self.analyzedVars['avg_words_p_sentence'])) - (84.6 * (self.analyzedVars['syllable_cnt']/ self.analyzedVars['word_cnt']))
         return round(score, 4)
         
     def FleschKincaidGradeLevel(self):
-        score = 0.39 * (self.analyzedVars['averageWordsPerSentence']) + 11.8 * (self.analyzedVars['syllableCount']/ self.analyzedVars['wordCount']) - 15.59
+        score = 0.39 * (self.analyzedVars['avg_words_p_sentence']) + 11.8 * (self.analyzedVars['syllable_cnt']/ self.analyzedVars['word_cnt']) - 15.59
         return round(score, 4)
         
     def GunningFogIndex(self):
-        score = 0.4 * ((self.analyzedVars['averageWordsPerSentence']) + (100 * (self.analyzedVars['complexwordCount']/self.analyzedVars['wordCount'])))
+        score = 0.4 * ((self.analyzedVars['avg_words_p_sentence']) + (100 * (self.analyzedVars['complex_word_cnt']/self.analyzedVars['word_cnt'])))
         return round(score, 4)
 
     def SMOGIndex(self):
-        score = (math.sqrt(self.analyzedVars['complexwordCount']*(30/self.analyzedVars['sentenceCount'])) + 3)
+        score = (math.sqrt(self.analyzedVars['complex_word_cnt']*(30/self.analyzedVars['sentence_cnt'])) + 3)
         return score
 
     def ColemanLiauIndex(self):
-        score = (5.89*(self.analyzedVars['charCount']/self.analyzedVars['wordCount']))-(30*(self.analyzedVars['sentenceCount']/self.analyzedVars['wordCount']))-15.8
+        score = (5.89*(self.analyzedVars['char_cnt']/self.analyzedVars['word_cnt']))-(30*(self.analyzedVars['sentence_cnt']/self.analyzedVars['word_cnt']))-15.8
         return round(score, 4)
 
     def LIX(self):
@@ -64,7 +64,7 @@ class Readability:
         for word in self.analyzedVars['words']:
             if len(word) >= 7:
                 longwords += 1.0
-        score = self.analyzedVars['wordCount'] / self.analyzedVars['sentenceCount'] + float(100 * longwords) / self.analyzedVars['wordCount']
+        score = self.analyzedVars['word_cnt'] / self.analyzedVars['sentence_cnt'] + float(100 * longwords) / self.analyzedVars['word_cnt']
         return score
 
     def RIX(self):
@@ -73,7 +73,7 @@ class Readability:
         for word in self.analyzedVars['words']:
             if len(word) >= 7:
                 longwords += 1.0
-        score = longwords / self.analyzedVars['sentenceCount']
+        score = longwords / self.analyzedVars['sentence_cnt']
         return score
         
 
