@@ -1,73 +1,12 @@
 #!/usr/bin/env python
 
 import math
-import nltk
-from nltk.tokenize import RegexpTokenizer
-import syllables_en
 
-TOKENIZER = RegexpTokenizer('(?u)\W+|\$[\d\.]+|\S+')
-SPECIAL_CHARS = ['.', ',', '!', '?']
-
-def getCharacterCount(words):
-    characters = 0
-    for word in words:
-        characters += len(word.decode("utf-8"))
-    return characters
-    
-def getWords(text=''):
-    words = []
-    words = TOKENIZER.tokenize(text)
-    filtered_words = []
-    for word in words:
-        if word in SPECIAL_CHARS or word == " ":
-            pass
-        else:
-            new_word = word.replace(",","").replace(".","")
-            new_word = new_word.replace("!","").replace("?","")
-            filtered_words.append(new_word)
-    return filtered_words
-
-def get_sentences(text=''):
-    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-    sentences = tokenizer.tokenize(text)
-    return sentences
-
-def count_syllables(words):
-    syllableCount = 0
-    for word in words:
-        syllableCount += syllables_en.count(word)
-    return syllableCount
-
-#This method must be enhanced. At the moment it only
-#considers the number of syllables in a word.
-#This often results in that too many complex words are detected.
-def countComplexWords(text=''):
-    words = getWords(text)
-    sentences = get_sentences(text)
-    complex_words = 0
-    found = False
-    cur_word = []
-    
-    for word in words:          
-        cur_word.append(word)
-        if count_syllables(cur_word)>= 3:
-            
-            #Checking proper nouns. If a word starts with a capital letter
-            #and is NOT at the beginning of a sentence we don't add it
-            #as a complex word.
-            if not(word[0].isupper()):
-                complex_words += 1
-            else:
-                for sentence in sentences:
-                    if str(sentence).startswith(word):
-                        found = True
-                        break
-                if found: 
-                    complex_words += 1
-                    found = False
-                
-        cur_word.remove(word)
-    return complex_words
+from utils import get_char_count
+from utils import get_words
+from utils import get_sentences
+from utils import count_syllables
+from utils import count_complex_words
 
 
 class Readability:
@@ -77,21 +16,21 @@ class Readability:
         self.analyze_text(text)
 
     def analyze_text(self, text):
-        words = getWords(text)
-        charCount = getCharacterCount(words)
-        wordCount = len(words)
-        sentenceCount = len(get_sentences(text))
-        syllableCount = count_syllables(words)
-        complexwordsCount = countComplexWords(text)
-        averageWordsPerSentence = wordCount/sentenceCount
+        words = get_words(text)
+        char_count = get_char_count(words)
+        word_count = len(words)
+        sentence_count = len(get_sentences(text))
+        syllable_count = count_syllables(words)
+        complexwords_count = count_complex_words(text)
+        averageWordsPerSentence = word_count/sentence_count
         
         self.analyzedVars = {
             'words': words,
-            'charCount': float(charCount),
-            'wordCount': float(wordCount),
-            'sentenceCount': float(sentenceCount),
-            'syllableCount': float(syllableCount),
-            'complexwordCount': float(complexwordsCount),
+            'charCount': float(char_count),
+            'wordCount': float(word_count),
+            'sentenceCount': float(sentence_count),
+            'syllableCount': float(syllable_count),
+            'complexwordCount': float(complexwords_count),
             'averageWordsPerSentence': float(averageWordsPerSentence)
         }
 
@@ -142,6 +81,8 @@ if __name__ == "__main__":
     text = """We are close to wrapping up our 10 week Rails Course. This week we will cover a handful of topics commonly encountered in Rails projects. We then wrap up with part 2 of our Reddit on Rails exercise!  By now you should be hard at work on your personal projects. The students in the course just presented in front of the class with some live demos and a brief intro to to the problems their app were solving. Maybe set aside some time this week to show someone your progress, block off 5 minutes and describe what goal you are working towards, the current state of the project (is it almost done, just getting started, needs UI, etc.), and then show them a quick demo of the app. Explain what type of feedback you are looking for (conceptual, design, usability, etc.) and see what they have to say.  As we are wrapping up the course you need to be focused on learning as much as you can, but also making sure you have the tools to succeed after the class is over."""
 
     rd = Readability(text)
+    print 'Test text:'
+    print '"%s"\n' % text
     print 'ARI: ', rd.ARI()
     print 'FleschReadingEase: ', rd.FleschReadingEase()
     print 'FleschKincaidGradeLevel: ', rd.FleschKincaidGradeLevel()
