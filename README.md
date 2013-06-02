@@ -13,11 +13,14 @@ data set:
     shell$ python
     >>import nltk
     >>nltk.download()
-    {{And then proceed to download the punkt dataset}}
+    {{a window will open, select and download the "punkt" dataset}}
 
 Demo:
 
     shell$ python readability.py
+    Test text:
+    "We are close to wrapping up our 10 week Rails Course. This week we will cover a handful of topics commonly encountered in Rails projects. We then wrap up with part 2 of our Reddit on Rails exercise!  By now you should be hard at work on your personal projects. The students in the course just presented in front of the class with some live demos and a brief intro to to the problems their app were solving. Maybe set aside some time this week to show someone your progress, block off 5 minutes and describe what goal you are working towards, the current state of the project (is it almost done, just getting started, needs UI, etc.), and then show them a quick demo of the app. Explain what type of feedback you are looking for (conceptual, design, usability, etc.) and see what they have to say.  As we are wrapping up the course you need to be focused on learning as much as you can, but also making sure you have the tools to succeed after the class is over."
+
     ARI:  7.2164516129
     FleschReadingEase:  88.9553
     FleschKincaidGradeLevel:  5.3235
@@ -27,7 +30,7 @@ Demo:
     LIX:  35.2666666667
     RIX:  3.1
 
-The following readability metrics are implemented in readability.py:
+The following readability metrics are included in readability.py:
 
 1. http://en.wikipedia.org/wiki/Automated_Readability_Index
 2. http://en.wikipedia.org/wiki/SMOG
@@ -38,6 +41,6 @@ The following readability metrics are implemented in readability.py:
 
 Largely lifted from:
 
-https://github.com/nltk/nltk_contrib/tree/master/nltk_contrib/readability
+    https://github.com/nltk/nltk_contrib/tree/master/nltk_contrib/readability
 
 SMOG index appears to perform most accurately.
