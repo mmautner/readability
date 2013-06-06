@@ -12,8 +12,7 @@ data set:
     shell$ pip install nltk
     shell$ python
     >>import nltk
-    >>nltk.download()
-    {{a window will open, select and download the "punkt" dataset}}
+    >>nltk.download('punkt')
 
 Demo:
 
