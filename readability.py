@@ -35,45 +35,59 @@ class Readability:
         }
 
     def ARI(self):
-        score = 4.71 * (self.analyzedVars['char_cnt'] / self.analyzedVars['word_cnt']) + 0.5 * (self.analyzedVars['word_cnt'] / self.analyzedVars['sentence_cnt']) - 21.43
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            score = 4.71 * (self.analyzedVars['char_cnt'] / self.analyzedVars['word_cnt']) + 0.5 * (self.analyzedVars['word_cnt'] / self.analyzedVars['sentence_cnt']) - 21.43
         return score
         
     def FleschReadingEase(self):
-        score = 0.0
-        score = 206.835 - (1.015 * (self.analyzedVars['avg_words_p_sentence'])) - (84.6 * (self.analyzedVars['syllable_cnt']/ self.analyzedVars['word_cnt']))
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            score = 206.835 - (1.015 * (self.analyzedVars['avg_words_p_sentence'])) - (84.6 * (self.analyzedVars['syllable_cnt']/ self.analyzedVars['word_cnt']))
         return round(score, 4)
         
     def FleschKincaidGradeLevel(self):
-        score = 0.39 * (self.analyzedVars['avg_words_p_sentence']) + 11.8 * (self.analyzedVars['syllable_cnt']/ self.analyzedVars['word_cnt']) - 15.59
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            score = 0.39 * (self.analyzedVars['avg_words_p_sentence']) + 11.8 * (self.analyzedVars['syllable_cnt']/ self.analyzedVars['word_cnt']) - 15.59
         return round(score, 4)
         
     def GunningFogIndex(self):
-        score = 0.4 * ((self.analyzedVars['avg_words_p_sentence']) + (100 * (self.analyzedVars['complex_word_cnt']/self.analyzedVars['word_cnt'])))
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            score = 0.4 * ((self.analyzedVars['avg_words_p_sentence']) + (100 * (self.analyzedVars['complex_word_cnt']/self.analyzedVars['word_cnt'])))
         return round(score, 4)
 
     def SMOGIndex(self):
-        score = (math.sqrt(self.analyzedVars['complex_word_cnt']*(30/self.analyzedVars['sentence_cnt'])) + 3)
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            score = (math.sqrt(self.analyzedVars['complex_word_cnt']*(30/self.analyzedVars['sentence_cnt'])) + 3)
         return score
 
     def ColemanLiauIndex(self):
-        score = (5.89*(self.analyzedVars['char_cnt']/self.analyzedVars['word_cnt']))-(30*(self.analyzedVars['sentence_cnt']/self.analyzedVars['word_cnt']))-15.8
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            score = (5.89*(self.analyzedVars['char_cnt']/self.analyzedVars['word_cnt']))-(30*(self.analyzedVars['sentence_cnt']/self.analyzedVars['word_cnt']))-15.8
         return round(score, 4)
 
     def LIX(self):
         longwords = 0.0
-        for word in self.analyzedVars['words']:
-            if len(word) >= 7:
-                longwords += 1.0
-        score = self.analyzedVars['word_cnt'] / self.analyzedVars['sentence_cnt'] + float(100 * longwords) / self.analyzedVars['word_cnt']
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            for word in self.analyzedVars['words']:
+                if len(word) >= 7:
+                    longwords += 1.0
+            score = self.analyzedVars['word_cnt'] / self.analyzedVars['sentence_cnt'] + float(100 * longwords) / self.analyzedVars['word_cnt']
         return score
 
     def RIX(self):
-        score = 0.0
         longwords = 0.0
-        for word in self.analyzedVars['words']:
-            if len(word) >= 7:
-                longwords += 1.0
-        score = longwords / self.analyzedVars['sentence_cnt']
+        score = 0.0 
+        if self.analyzedVars['word_cnt'] > 0.0:
+            for word in self.analyzedVars['words']:
+                if len(word) >= 7:
+                    longwords += 1.0
+            score = longwords / self.analyzedVars['sentence_cnt']
         return score
         
 
